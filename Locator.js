@@ -16,7 +16,7 @@ function createsPostCodeURL(input) {
 }
 
 function parsePostcodeURL(url) {
-    got(url, { json: true })
+    return got(url, { json: true })
         .then(response => {
             let arrayLonLat = [response.body.result.latitude, response.body.result.longitude];
             return arrayLonLat;
@@ -26,8 +26,8 @@ function parsePostcodeURL(url) {
            return LonLatURL;
        })
        .then(LonLatURL => {
-            var promise = parseLonLatURL(LonLatURL);
-            return promise;
+            var stopPointArray = parseLonLatURL(LonLatURL);
+            return stopPointArray;
        })
         .then(stopPointArray => {
             filteringData(stopPointArray);
@@ -36,7 +36,6 @@ function parsePostcodeURL(url) {
 
 function createsLonLatURL(arrayLonLat) {
     const url = "https://api-radon.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius=300&lat=" + arrayLonLat[0] + "&lon=" + arrayLonLat[1];
-    console.log("URL&& " + url);
     return url;
 }
 
@@ -45,7 +44,6 @@ function parseLonLatURL(url) {
         .then(response => {
             // console.log(response);
             var stopPointArray = response.body.stopPoints;
-            console.log("StopPointArray** " + stopPointArray);
             return stopPointArray;
        })
 }
@@ -70,7 +68,20 @@ function filteringData(stopPointArray) {
 function runProgram() {
     var postCode = getUserPostcode();
     var url = createsPostCodeURL(postCode);
-    parsePostcodeURL(url);
+    let promise = new Promise(function() {
+        parsePostcodeURL(url);
+        return url;
+        })
+        promise.then(arrayLonLat => {
+            var LonLatURL = createsLonLatURL(arrayLonLat);
+            return LonLatURL;
+        })
+        .then(LonLatURL => {
+            var stopPointArray = parseLonLatURL(LonLatURL);
+            return stopPointArray;
+        })
+        .then(stopPointArray => {
+            filteringData(stopPointArray);
+        })
 }
-
 runProgram()
