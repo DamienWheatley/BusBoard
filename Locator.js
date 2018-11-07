@@ -2,11 +2,15 @@ const readline = require('readline-sync');
 const got = require('got');
 const importClass = require('./BusArrival.js');
 
+const appId = "f771fea0";
+const appKey = "0cf6215d5205ab47fc9f726c0b6221b0";
+
+
 //Retrieves information from URL and stores it in an array.
 
 function getUserPostcode () {
     console.log("Please enter your Postcode without spaces");
-    var postcode = readline.prompt();
+    var postcode = "NW51TL"//readline.prompt();
     return postcode;
 }
 
@@ -16,26 +20,15 @@ function createsPostCodeURL(input) {
 }
 
 function parsePostcodeURL(url) {
-    got(url, { json: true })
+    return got(url, { json: true })
         .then(response => {
             let arrayLonLat = [response.body.result.latitude, response.body.result.longitude];
             return arrayLonLat;
        })
-       .then(arrayLonLat => {
-           var LonLatURL = createsLonLatURL(arrayLonLat);
-           return LonLatURL;
-       })
-       .then(LonLatURL => {
-            var stopPointArray = parseLonLatURL(LonLatURL);
-            return stopPointArray;
-       })
-        .then(stopPointArray => {
-            filteringData(stopPointArray);
-        })
-    }
+}
 
 function createsLonLatURL(arrayLonLat) {
-    const url = "https://api-radon.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius=300&lat=" + arrayLonLat[0] + "&lon=" + arrayLonLat[1];
+    const url = "https://api.tfl.gov.uk/StopPoint?stopTypes=NaptanPublicBusCoachTram&radius=300&lat=" + arrayLonLat[0] + "&lon=" + arrayLonLat[1] + "&app_id=" + appId + "&app_key=" + appKey;
     return url;
 }
 
@@ -48,9 +41,8 @@ function parseLonLatURL(url) {
        })
 }
 
-function filteringData(stopPointArray) {
+function displayData(stopPointArray) {
     let retrievedData = [];
-    // console.log(array);
     console.log("The nearest bus stop(s) for that postcode are:"); 
     for(i = 0; i <= stopPointArray.length - 1; i++) {
         retrievedData.push(new importClass.BusCodes(stopPointArray[i].indicator, stopPointArray[i].commonName, stopPointArray[i].id));
@@ -62,13 +54,24 @@ function filteringData(stopPointArray) {
     } else if (retrievedData.length = 0) {
         console.log("Sorry, there are no bus stops nearby.")
     }
-    // console.log(retrievedData);
 }
 
 function runProgram() {
     var postCode = getUserPostcode();
     var url = createsPostCodeURL(postCode);
-        parsePostcodeURL(url);
-}
 
+    parsePostcodeURL(url)
+        .then(arrayLonLat => {
+            var LonLatURL = createsLonLatURL(arrayLonLat);
+            return LonLatURL;
+        })
+        .then(LonLatURL => {
+            var stopPointArray = parseLonLatURL(LonLatURL);
+            return stopPointArray;
+        })
+        .then(stopPointArray => {
+            displayData(stopPointArray);
+        })
+}
+   
 runProgram()
