@@ -1,5 +1,5 @@
 class BusArrival{
-    constructor(vehicleId,timeToStation,lineName,towards){
+    constructor(vehicleId,timeToStation,lineName,towards) {
         this.vehicleId = vehicleId;
         this.timeToStation = timeToStation;
         this.lineName = lineName;
@@ -7,5 +7,14 @@ class BusArrival{
     }
 }
 
+class BusCodes{
+    constructor(indicator, commonName, id) {
+        this.indicator = indicator;
+        this.commonName = commonName;
+        this.id = id;
+    }
+}
+
 // export let busArrival = new BusArrival ()
-exports.BusArrival = BusArrival
+exports.BusArrival = BusArrival;
+exports.BusCodes = BusCodes;

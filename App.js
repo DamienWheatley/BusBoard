@@ -23,11 +23,11 @@ function filteringData(array) {
 //Provides the filtering criteria for the Parser and returns the filtered information into an array.
 function runProgram() {
     var busCode = userInput();
-    var url = createsURL(busCode);
+    var url = createsArrivalsURL(busCode);
     importParse.parseURL(filteringData,url);
 }
 
-function createsURL(input) {
+function createsArrivalsURL(input) {
     const url = "https://api.tfl.gov.uk/StopPoint/" + input + "/Arrivals";
     return url;
 }

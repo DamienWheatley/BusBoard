@@ -15,6 +15,4 @@ function parseURL(callback,url) {
        .catch
        }
 
-
-
 exports.parseURL = parseURL;
