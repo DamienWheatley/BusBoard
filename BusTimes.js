@@ -1,6 +1,6 @@
 const readline = require('readline-sync');
 const importParse = require('./Parser.js');
-const importClass = require('./BusArrival.js');
+const importClass = require('./Classes.js');
 const moment = require('moment');
 
 //Filters information for user inputted Bus Code
@@ -47,5 +47,5 @@ function sortData(bus1,bus2) {
         return 0;
     }
 }
-
-runProgram();
+let RunBusTimes = runProgram();
+exports.BusTimes = RunBusTimes;

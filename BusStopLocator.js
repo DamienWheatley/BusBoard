@@ -1,6 +1,6 @@
 const readline = require('readline-sync');
 const got = require('got');
-const importClass = require('./BusArrival.js');
+const importClass = require('./Classes.js');
 
 const appId = "f771fea0";
 const appKey = "0cf6215d5205ab47fc9f726c0b6221b0";
@@ -10,7 +10,7 @@ const appKey = "0cf6215d5205ab47fc9f726c0b6221b0";
 
 function getUserPostcode () {
     console.log("Please enter your Postcode without spaces");
-    var postcode = "NW51TL"//readline.prompt();
+    var postcode = document.getElementById("frm1").value
     return postcode;
 }
 
@@ -74,4 +74,4 @@ function runProgram() {
         })
 }
    
-runProgram()
+runProgram();
