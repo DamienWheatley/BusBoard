@@ -16,7 +16,7 @@ function createsPostCodeURL(input) {
 }
 
 function parsePostcodeURL(url) {
-    return got(url, { json: true })
+    got(url, { json: true })
         .then(response => {
             let arrayLonLat = [response.body.result.latitude, response.body.result.longitude];
             return arrayLonLat;
@@ -68,20 +68,7 @@ function filteringData(stopPointArray) {
 function runProgram() {
     var postCode = getUserPostcode();
     var url = createsPostCodeURL(postCode);
-    let promise = new Promise(function() {
         parsePostcodeURL(url);
-        return url;
-        })
-        promise.then(arrayLonLat => {
-            var LonLatURL = createsLonLatURL(arrayLonLat);
-            return LonLatURL;
-        })
-        .then(LonLatURL => {
-            var stopPointArray = parseLonLatURL(LonLatURL);
-            return stopPointArray;
-        })
-        .then(stopPointArray => {
-            filteringData(stopPointArray);
-        })
 }
+
 runProgram()
