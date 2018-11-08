@@ -5,12 +5,11 @@ const importClass = require('./Classes.js');
 const appId = "f771fea0";
 const appKey = "0cf6215d5205ab47fc9f726c0b6221b0";
 
-
 //Retrieves information from URL and stores it in an array.
 
 function getUserPostcode () {
-    console.log("Please enter your Postcode without spaces");
-    var postcode = document.getElementById("frm1").value
+    // console.log("Please enter your Postcode without spaces");
+    var postcode = "NW51TL"//readline.prompt();
     return postcode;
 }
 
@@ -35,7 +34,6 @@ function createsLonLatURL(arrayLonLat) {
 function parseLonLatURL(url) {
     return got(url, { json: true })
         .then(response => {
-            // console.log(response);
             var stopPointArray = response.body.stopPoints;
             return stopPointArray;
        })
@@ -43,24 +41,25 @@ function parseLonLatURL(url) {
 
 function displayData(stopPointArray) {
     let retrievedData = [];
-    console.log("The nearest bus stop(s) for that postcode are:"); 
-    for(i = 0; i <= stopPointArray.length - 1; i++) {
-        retrievedData.push(new importClass.BusCodes(stopPointArray[i].indicator, stopPointArray[i].commonName, stopPointArray[i].id));
+    // console.log("The nearest bus stop(s) for that postcode are:"); 
+    for(i = 0; i <= 1; i++) {
+        retrievedData.push(new importClass.BusCodes(stopPointArray[i].commonName, stopPointArray[i].id));
     }
-    if (retrievedData.length > 0) {
-        retrievedData.forEach(function(element) {
-            console.log(element.commonName + " - the unique identifying code for this station is " + element.id + ".");
-        })
-    } else if (retrievedData.length = 0) {
-        console.log("Sorry, there are no bus stops nearby.")
-    }
+    return retrievedData;
+//     if (retrievedData.length > 0) {
+//         retrievedData.forEach(function(element) {
+//             console.log(element.commonName + " - the unique identifying code for this station is " + element.id + ".");
+//         })
+//     } else if (retrievedData.length = 0) {
+//         console.log("Sorry, there are no bus stops nearby.")
+//     }
 }
 
 function runProgram() {
     var postCode = getUserPostcode();
     var url = createsPostCodeURL(postCode);
 
-    parsePostcodeURL(url)
+    var output = parsePostcodeURL(url)
         .then(arrayLonLat => {
             var LonLatURL = createsLonLatURL(arrayLonLat);
             return LonLatURL;
@@ -70,8 +69,12 @@ function runProgram() {
             return stopPointArray;
         })
         .then(stopPointArray => {
-            displayData(stopPointArray);
+            var retrievedData = displayData(stopPointArray);
+            return retrievedData;
         })
+    return output;   
 }
-   
-runProgram();
+
+// runProgram();
+
+exports.RunBusStopLocator = runProgram;

@@ -2,6 +2,21 @@ const readline = require('readline-sync');
 const importParse = require('./Parser.js');
 const importClass = require('./Classes.js');
 const moment = require('moment');
+// const BusLocator = require('./BusStopLocator.js');
+
+const appId = "f771fea0";
+const appKey = "0cf6215d5205ab47fc9f726c0b6221b0";
+
+function userInput() {
+    console.log("Please enter the bus code:");
+    var userInput = "490008660N"//readline.prompt();
+    return userInput;
+}
+
+function createsArrivalsURL(input) {
+    const url = "https://api.tfl.gov.uk/StopPoint/" + input + "/Arrivals";
+    return url;
+}
 
 //Filters information for user inputted Bus Code
 function filteringData(array) {
@@ -16,26 +31,8 @@ function filteringData(array) {
         console.log("Arriving " + moment().add(element.timeToStation,"seconds").fromNow() + " is bus " + element.lineName + " towards " + element.towards + " with vehicle id " + element.vehicleId )
         })
     } else {
-        console.log(`There was no information for that bus code :'(`);
+        console.log("There was no information for that bus code.");
     }
-}
-
-//Provides the filtering criteria for the Parser and returns the filtered information into an array.
-function runProgram() {
-    var busCode = userInput();
-    var url = createsArrivalsURL(busCode);
-    importParse.parseURL(filteringData,url);
-}
-
-function createsArrivalsURL(input) {
-    const url = "https://api.tfl.gov.uk/StopPoint/" + input + "/Arrivals";
-    return url;
-}
-
-function userInput() {
-    console.log("Please enter the bus code:");
-    var userInput = readline.prompt();
-    return userInput;
 }
 
 function sortData(bus1,bus2) {
@@ -47,5 +44,11 @@ function sortData(bus1,bus2) {
         return 0;
     }
 }
-let RunBusTimes = runProgram();
-exports.BusTimes = RunBusTimes;
+
+function runBusTimesProgram() {
+    var busCode = userInput();
+    var url = createsArrivalsURL(busCode);
+    importParse.parseURL(filteringData,url);
+}
+
+runBusTimesProgram()

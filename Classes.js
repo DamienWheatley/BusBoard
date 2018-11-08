@@ -8,8 +8,7 @@ class BusArrival{
 }
 
 class BusCodes{
-    constructor(indicator, commonName, id) {
-        this.indicator = indicator;
+    constructor(commonName, id) {
         this.commonName = commonName;
         this.id = id;
     }
