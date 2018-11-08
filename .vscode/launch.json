@@ -7,13 +7,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "BusStopLocator Debugger",
             "program": "${workspaceFolder}/BusStopLocator.js"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "BusTimes Debugger",
             "program": "${workspaceFolder}/BusTimes.js"
         }
     ]

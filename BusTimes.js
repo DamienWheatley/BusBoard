@@ -8,7 +8,6 @@ const appId = "f771fea0";
 const appKey = "0cf6215d5205ab47fc9f726c0b6221b0";
 
 function userInput() {
-    console.log("Please enter the bus code:");
     var userInput = "490008660N"//readline.prompt();
     return userInput;
 }
@@ -25,14 +24,16 @@ function filteringData(array) {
     for(i = 0; i <= numberOfBuses - 1; i++) {
         retrievedData.push(new importClass.BusArrival(array[i].vehicleId,array[i].timeToStation,array[i].lineName,array[i].towards))
     }
+    return retrievedData
+}
+
+function convertTime (retrievedData){
     if (retrievedData.length > 0) {
         retrievedData.sort(sortData);
         retrievedData.forEach(function(element) {
-        console.log("Arriving " + moment().add(element.timeToStation,"seconds").fromNow() + " is bus " + element.lineName + " towards " + element.towards + " with vehicle id " + element.vehicleId )
-        })
-    } else {
-        console.log("There was no information for that bus code.");
+        moment().add(element.timeToStation,"seconds").fromNow()})
     }
+    return retrievedData
 }
 
 function sortData(bus1,bus2) {
@@ -48,7 +49,17 @@ function sortData(bus1,bus2) {
 function runBusTimesProgram() {
     var busCode = userInput();
     var url = createsArrivalsURL(busCode);
-    importParse.parseURL(filteringData,url);
+
+    var output = importParse.parseURL(url)
+        .then(array => {
+            var retrievedData = filteringData(array);
+            return retrievedData;
+        })
+        .then(retrievedData => {
+            var retrievedData = convertTime(retrievedData)
+            return retrievedData;
+        })
+    return output;
 }
 
-runBusTimesProgram()
+exports.runBusTimes = runBusTimesProgram;

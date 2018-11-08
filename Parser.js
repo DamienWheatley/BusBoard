@@ -3,12 +3,12 @@ const got = require('got');
 
 //Retrieves information from URL and stores it in an array.
 
-function parseURL(callback,url) {
-    var array = [];
-    got(url, { json: true })
+function parseURL(url) {
+    return got(url, { json: true })
         .then(response => {
+            var array = [];
             array = response.body;
-            callback(array);
+            return array;
         })
 }
 

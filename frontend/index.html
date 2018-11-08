@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="departures.js"></script>
+        <link rel="stylesheet" href="stylesheet.css">
+    </head>
+    <body>
+        <h1>BusBoard</h1>
+        <form id="pcForm" action="javascript:void(0)" onsubmit="getBusStops()">
+            Enter a postcode:
+            <input type="text" id="postcode"/>
+            <input type="submit" value="Submit"/>
+        </form><br>
+        <div>
+            <h2>Nearest Bus Stops</h2>
+            <p id="PCresults"></p>
+            <p id="busStops"></p>
+            <p id="busStops2"></p>
+        </div><br>
+
+        <h2>Select a Bus ID</h2>
+        <form id="baForm" action="javascript:void(0)" onsubmit="getBusArrivals()"></form>
+            Enter a bus stop ID:
+            <input type="text" id="busStopCode"/>
+            <input type="submit" value="Submit"/>
+        </form><br>
+        <div>
+            <h2>The next buses will be</h2>
+            <p id="busArrival"></p>
+            <p id="buses"></p>
+        </div>
+    </body>
+</html>
